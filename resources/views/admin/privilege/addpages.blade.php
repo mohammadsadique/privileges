@@ -41,19 +41,19 @@
                     </div>
                     <form action="{{route('subaddmodule')}}" role="form" method="post" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="updval" value="@if(session()->has('ban')){{session()->get('ban')->id}}@endif">
+                        <input type="hidden" name="id" value="@if(session()->has('ban')){{session()->get('ban')->id}}@endif">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Module Name</label>
-                                        <input type="text" name="module" value="@if(session()->has('ban')){{session()->get('ban')->name}}@endif{{old('module')}}" class="form-control" placeholder="Enter ...">
+                                        <input type="text" name="module" value="@if(session()->has('ban')){{session()->get('ban')->module}}@endif{{old('module')}}" class="form-control" placeholder="Enter ...">
                                     </div>
                                 </div>                                 
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" name="addmodule" class="btn btn-primary">@if(session()->has('ban')) {{ 'Update Staff' }}@else{{ 'Add Module'}}@endif</button>
+                            <button type="submit" name="addmodule" class="btn btn-primary">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</button>
                         </div>
                     </form>
                 </div>
@@ -87,11 +87,11 @@
             <div class="col-md-4">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">@if(session()->has('ban')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</h3>
+                        <h3 class="card-title">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</h3>
                     </div>
                     <form action="{{route('subaddsubmodule')}}" role="form" method="post" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="updval" value="@if(session()->has('ban')){{session()->get('ban')->id}}@endif">
+                        <input type="hidden" name="id" value="@if(session()->has('ban2')){{session()->get('ban2')->id}}@endif">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -99,6 +99,13 @@
                                         <label>Module </label>
                                         <select name="selmodule" class="form-control select2 categ"
                                             style="width: 100%;">
+                                            @if(session()->has('ban3'))
+                                                @if(session()->get('ban3') == '')                   
+                                                    <option value="nomodule">No Module</option>
+                                                @else
+                                                    <option value="{{session()->get('ban3')->id}}">{{session()->get('ban3')->module}}</option>
+                                                @endif
+                                            @endif
                                             {!! $mod !!}                                            
                                         </select>
                                     </div>
@@ -106,13 +113,13 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Sub Module Name</label>
-                                        <input type="text" name="submodule" value="@if(session()->has('ban')){{session()->get('ban')->name}}@endif{{old('submodule')}}" class="form-control" placeholder="Enter ...">
+                                        <input type="text" name="submodule" value="@if(session()->has('ban2')){{session()->get('ban2')->submodule}}@endif{{old('submodule')}}" class="form-control" placeholder="Enter ...">
                                     </div>
                                 </div>                                 
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" name="addsubmodule" class="btn btn-primary">@if(session()->has('ban')) {{ 'Update Staff' }}@else{{ 'Add Sub Module'}}@endif</button>
+                            <button type="submit" name="addsubmodule" class="btn btn-primary">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</button>
                         </div>
                     </form>
                 </div>
@@ -143,6 +150,22 @@
         </div>
     </div>
 </section>
+<form method="post" action="{{route('delmodule')}}" class="sub_del">
+    @csrf 
+    <input type="hidden" class="id_val" name="id">
+</form>
+<form method="post" action="{{route('delsubmodule')}}" class="sub_del2">
+    @csrf 
+    <input type="hidden" class="id_val" name="id">
+</form>
+<form method="post" action="{{route('updmodule')}}" class="sub_upd">
+    @csrf
+    <input type="hidden" class="upd_val" name="id">
+</form>
+<form method="post" action="{{route('updsubmodule')}}" class="sub_upd2">
+    @csrf
+    <input type="hidden" class="upd_val" name="id">
+</form>
 @endsection
 @section('customjsfile')
     <script>
@@ -163,6 +186,35 @@
             $(this).addClass('resetpass');
         });
     });
+    $(document).on('click', '.delete', function(e) {
+        e.preventDefault();
+        var id = $(this).val();
+        if (window.confirm("Are you sure, you want to delete?")) {
+            $('input.id_val').attr('value', id);
+            $('.sub_del').submit();
+        }
+    });
+    $(document).on('click', '.delete2', function(e) {
+        e.preventDefault();
+        var id = $(this).val();
+        if (window.confirm("Are you sure, you want to delete?")) {
+            $('input.id_val').attr('value', id);
+            $('.sub_del2').submit();
+        }
+    });       
+    $(document).on('click', '.upd', function(e) {
+        e.preventDefault();
+        var id = $(this).val();
+        $('input.upd_val').attr('value', id);
+        $('.sub_upd').submit();
+    });      
+    $(document).on('click', '.upd2', function(e) {
+        e.preventDefault();
+        var id = $(this).val();
+        $('input.upd_val').attr('value', id);
+        $('.sub_upd2').submit();
+    }); 
+
     </script>
 @endsection
 @endcomponent

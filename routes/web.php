@@ -24,6 +24,10 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::get('/privilege/show-privilege',[ PrivilegesC::class, 'showprivilege'])->name('showprivilege');
     Route::post('/subaddmodule',[ PrivilegesC::class, 'subaddmodule'])->name('subaddmodule');
     Route::post('/subaddsubmodule',[ PrivilegesC::class, 'subaddsubmodule'])->name('subaddsubmodule');
+    Route::post('/delmodule',[ PrivilegesC::class, 'delmodule'])->name('delmodule');
+    Route::post('/delsubmodule',[ PrivilegesC::class, 'delsubmodule'])->name('delsubmodule');
+    Route::post('/updmodule',[ PrivilegesC::class, 'updmodule'])->name('updmodule');
+    Route::post('/updsubmodule',[ PrivilegesC::class, 'updsubmodule'])->name('updsubmodule');
 
 
     // Staff

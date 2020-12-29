@@ -44,9 +44,24 @@ class PrivilegesC extends Controller
               </div>
           </div>';
         }
+        $mod2 = '';
+        $c = Privileges::where(['tag'=>0,'onoff'=>1])->get();
+        foreach($c as $cc){
+            $mod2 .=
+            '<div class="col-md-4">
+                <br>                
+                <div class="card card-success">
+                    <div class="card-header">       
+                        <div class="icheck-default d-inline" >
+                            <input type="checkbox" value="'.$cc->id.'" id="'.$cc->id.'" class="selectall">
+                            <label for="'.$cc->id.'"><h3 class="card-title">'.$cc->submodule.'</h3></label>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+        }
         
-        
-        return view('admin.privilege.showprivilege',compact('mod'));
+        return view('admin.privilege.showprivilege',compact('mod','mod2'));
     }
 
     public function addpages()
@@ -76,7 +91,7 @@ class PrivilegesC extends Controller
           $i++;
         }
 
-        $mod = '<option value="">Select Module</option><option value="">No Module</option>';
+        $mod = '<option value="">Select Module</option><option value="nomodule">No Module</option>';
         $f = Privileges::where(['status'=>1,'onoff'=>1])->get();
         foreach($f as $val){
             $mod .= '            
@@ -94,17 +109,23 @@ class PrivilegesC extends Controller
           } else {
               $btn = '<button type="submit" class="btn btn-secondary">Hide</button>';
           }
-          $c = Privileges::where('id',$val->tag)->first();
+          if($val->tag > 0){
+              $c = Privileges::where('id',$val->tag)->first();
+              $module = $c->module;
+          } else {
+              $module = '';
+          }
+
           $tb2 .= 
           '<tr>
               <td>'.$i2.'</td>
-              <td style="text-align: center;">'.$c->module.'</td>
+              <td style="text-align: center;">'.$module.'</td>
               <td style="text-align: center;">'.$val->submodule.'</td>
               <td style="text-align: center;">'.$btn.'</td>
               <td style="text-align: center;">
                   <div class="btn-group">
-                      <button type="submit" value="'.$val->id.'" class="btn btn-danger delete"><i class="fas fa-trash"></i></button>
-                      <button type="submit" value="'.$val->id.'" class="btn btn-warning upd"><i class="fas fa-edit"></i></button>                
+                      <button type="submit" value="'.$val->id.'" class="btn btn-danger delete2"><i class="fas fa-trash"></i></button>
+                      <button type="submit" value="'.$val->id.'" class="btn btn-warning upd2"><i class="fas fa-edit"></i></button>                
                   </div>
               </td>
           </tr>';
@@ -120,20 +141,33 @@ class PrivilegesC extends Controller
         $valid = $request->validate([
           'module' => 'required|string',
         ]);
-        $ee = new Privileges;     
+        $id = $request->id;
+        if(!is_null($id)){
+			$ee = Privileges::find($id);
+		}
+		else
+		{
+			$ee = new Privileges;
+        }     
         $ee->module = $request->module;
         $ee->status = 1;
         $ee->onoff = 1;
         $ee->created_at = date('Y-m-d H:i:s'); 
         $ee->updated_at = date('Y-m-d H:i:s');
-        $ee->save();
+        $ee->save();    
 
-        $r = Privileges::orderBy('id','DESC')->limit(1)->first();
-        $ee2 = Privileges::find($r->id);
-        $ee2->tag = $r->id;
-        $ee2->save();
-
-        return redirect()->back()->with('success', 'Module added successfully!');	
+        if(!is_null($id)){
+			return redirect()->back()->with('success', 'Module updated successfully!');	
+		}
+		else
+		{
+            $r = Privileges::orderBy('id','DESC')->limit(1)->first();
+            $ee2 = Privileges::find($r->id);
+            $ee2->tag = $r->id;
+            $ee2->save();
+			return redirect()->back()->with('success', 'Module added successfully!');	
+        }  
+        
     }
 
     public function subaddsubmodule(Request $request)
@@ -145,19 +179,60 @@ class PrivilegesC extends Controller
         [
             'selmodule.required' => 'The module field is required.'
         ]);
-
-        $ee = new Privileges; 
-        $ee->submodule = $request->submodule;
-        $ee->status = 0;
-        $ee->tag = $request->selmodule;
-        $ee->onoff = 1;
+        $id = $request->id;
+        if(!is_null($id)){
+			$ee = Privileges::find($id);
+		}
+		else
+		{
+            $ee = new Privileges;
+            $ee->status = 0;
+            $ee->onoff = 1;
+        }  
+        $ee->submodule = $request->submodule;        
+        $ee->tag = $request->selmodule;        
         $ee->created_at = date('Y-m-d H:i:s'); 
         $ee->updated_at = date('Y-m-d H:i:s');
         $ee->save();
-
-        return redirect()->back()->with('success', 'Sub Module added successfully!');	
+        if(!is_null($id)){
+			return redirect()->back()->with('success', 'Sub Module updated successfully!');	
+		}
+		else
+		{
+			return redirect()->back()->with('success', 'Sub Module added successfully!');	
+        } 
+        
     }
 
+
+    public function delmodule(Request $request)
+    {
+        $id = $request->id;
+        $a = Privileges::find($id);
+        Privileges::where('tag',$a->tag)->delete();
+        Privileges::where('id',$id)->delete();
+        return redirect()->back()->with('success', 'Module deleted successfully!');	
+    }
+    public function delsubmodule(Request $request)
+    {
+        $id = $request->id;
+        Privileges::where('id',$id)->delete();
+        return redirect()->back()->with('success', 'Sub Module deleted successfully!');	
+    }
+
+    public function updmodule(Request $request){
+        $id = $request->id; 
+		$ccv = Privileges::select('*')->where('id',$id)->first(); 
+		return redirect()->back()->with('ban' , $ccv );
+    }
+    public function updsubmodule(Request $request){
+        $id = $request->id; 
+        $a = Privileges::select('*')->where('id',$id)->first();
+        $b = Privileges::where('id',$a->tag)->first();
+        // dd($b);
+        //$mod = '<option value="'.$b->id.'">'.$b->module.'</option>'; 
+		return redirect()->back()->with(['ban2' => $a , 'ban3' => $b ]);
+    }
 }
 
 

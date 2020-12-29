@@ -17,94 +17,12 @@
             </div>
 
                 {!! $mod !!}
-
-
-            <div class="col-md-4">
-                <br>                
-                <div class="card card-success">
-                  <div class="card-header">       
-                    <div class="icheck-default d-inline" >
-                      <input type="checkbox" value="3" id="tabname" class="selectall">
-                      <label for="tabname"><h3 class="card-title">Tab Name</h3></label>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-group clearfix">
-                          <div class="icheck-success d-inline">
-                            <input type="checkbox" name="3" id="checkboxPrimary1">
-                            <label for="checkboxPrimary1">Primary checkbox</label>
-                          </div>                     
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-group clearfix">
-                          <div class="icheck-success d-inline">
-                            <input type="checkbox" name="3" id="checkboxDanger1">
-                            <label for="checkboxDanger1">Primary checkbox</label>
-                          </div>                     
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-group clearfix">
-                          <div class="icheck-success d-inline">
-                            <input type="checkbox" name="3" id="checkboxSuccess1">
-                            <label for="checkboxSuccess1">Primary checkbox</label>
-                          </div>                     
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div> 
-            <div class="col-md-4">
-                <br>                
-                <div class="card card-success">
-                  <div class="card-header">       
-                    <div class="icheck-default d-inline" >
-                      <input type="checkbox" value="2" id="tabname2" class="selectall">
-                      <label for="tabname2"><h3 class="card-title">Tab Name 2</h3></label>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-group clearfix">
-                          <div class="icheck-success d-inline">
-                            <input type="checkbox" name="2" id="2a">
-                            <label for="2a">Primary checkbox 2</label>
-                          </div>                     
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-group clearfix">
-                          <div class="icheck-success d-inline">
-                            <input type="checkbox" name="2" id="2b">
-                            <label for="2b">Primary checkbox 2</label>
-                          </div>                     
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="form-group clearfix">
-                          <div class="icheck-success d-inline">
-                            <input type="checkbox" name="2" id="2c">
-                            <label for="2c">Primary checkbox 2</label>
-                          </div>                     
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>               
+                 
+                        
+        </div>
+        <div class="row">
+          <div class="col-md-12"><br><hr></div>
+          {!! $mod2 !!}          
         </div>
     </div>
 </section>
