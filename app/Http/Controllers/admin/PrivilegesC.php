@@ -87,7 +87,7 @@ class PrivilegesC extends Controller
               <td style="text-align: center;">
                   <div class="btn-group">
                       <button type="submit" value="'.$val->id.'" class="btn btn-danger delete"><i class="fas fa-trash"></i></button>
-                      <button type="button" value="'.$val->id.'" class="btn btn-warning upd" data-toggle="modal" data-target="#newmodule"><i class="fas fa-edit"></i></button>                
+                      <button type="button" value="'.$val->id.'" class="btn btn-warning upd"><i class="fas fa-edit"></i></button>                
                   </div>
               </td>
           </tr>';
@@ -128,7 +128,7 @@ class PrivilegesC extends Controller
               <td style="text-align: center;">
                   <div class="btn-group">
                       <button type="submit" value="'.$val->id.'" class="btn btn-danger delete2"><i class="fas fa-trash"></i></button>
-                      <button type="submit" value="'.$val->id.'" class="btn btn-warning upd2"><i class="fas fa-edit"></i></button>                
+                      <button type="button" value="'.$val->id.'" class="btn btn-warning upd2"><i class="fas fa-edit"></i></button>                
                   </div>
               </td>
           </tr>';
@@ -233,9 +233,19 @@ class PrivilegesC extends Controller
         $id = $request->id; 
         $a = Privileges::select('*')->where('id',$id)->first();
         $b = Privileges::where('id',$a->tag)->first();
+
+
+        $mod = '<option value="'.$b->id.'" class="fopt">'.$b->module.'</option><option value="">Select Module</option><option value="nomodule">No Module</option>';
+        $f = Privileges::where(['status'=>1,'onoff'=>1])->get();
+        foreach($f as $val){
+            $mod .= '            
+            <option value="'.$val->id.'">'.$val->module.'</option>
+            ';
+        }
+        return json_encode(array($a,$mod));
         // dd($b);
         //$mod = '<option value="'.$b->id.'">'.$b->module.'</option>'; 
-		return redirect()->back()->with(['ban2' => $a , 'ban3' => $b ]);
+		//return redirect()->back()->with(['ban2' => $a , 'ban3' => $b ]);
     }
 
     public function showmodule(Request $request)

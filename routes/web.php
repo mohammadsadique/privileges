@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\LoginC;
 use App\Http\Controllers\admin\dashboard\dashboardC;
 use App\Http\Controllers\admin\managestaff\AddStaffC;
 use App\Http\Controllers\admin\PrivilegesC;
+use App\Http\Controllers\admin\Privileges2C;
 
 
 Route::get('/admin', [ LoginC::class , 'landing' ])->name('loginpage');
@@ -32,6 +33,9 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::post('/hidemodule',[ PrivilegesC::class, 'hidemodule'])->name('hidemodule');
     Route::post('/showsubmodule',[ PrivilegesC::class, 'showsubmodule'])->name('showsubmodule');
     Route::post('/hidesubmodule',[ PrivilegesC::class, 'hidesubmodule'])->name('hidesubmodule');
+    Route::get('/privilege/assign-privilege',[ Privileges2C::class, 'assignprivilege'])->name('assignprivilege');
+    Route::post('/subassignpri',[ Privileges2C::class, 'subassignpri'])->name('subassignpri');
+    Route::get('/privilege/staff-privilege/{id}',[ Privileges2C::class, 'staffprivilege'])->name('staffprivilege');
 
 
     // Staff

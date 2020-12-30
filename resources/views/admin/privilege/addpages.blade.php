@@ -1,10 +1,6 @@
 @component('components.admin.master')
 @section('main-section')
-<!-- 
 
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
-                  Launch Default Modal
-                </button> -->
     
     
 <section class="content">
@@ -42,8 +38,8 @@
                 <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h4 class="modal-title">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h4 class="modal-title titlemodule">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</h4>
+                    <button type="button" class="close modalclose" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
@@ -61,8 +57,8 @@
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</button>
+                            <button type="button" class="btn btn-default modalclose" >Close</button>
+                            <button type="submit" class="btn btn-primary btnmodule">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</button>
                         </div>
                     </form>
                 </div>
@@ -100,7 +96,7 @@
                         <h3 class="card-title">Module</h3>
                     </div>
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table class="example1 table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>S.No</th>
@@ -124,7 +120,7 @@
                         <h3 class="card-title">Sub Module</h3>
                     </div>
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table class="example1 table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>S.No</th>
@@ -149,20 +145,20 @@
                 <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h4 class="modal-title">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h4 class="modal-title titlemodule2">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</h4>
+                    <button type="button" class="close modalclose2" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
                     <form action="{{route('subaddsubmodule')}}" role="form" method="post" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="@if(session()->has('ban2')){{session()->get('ban2')->id}}@endif">
+                        <input type="hidden" name="id" class="id2" value="@if(session()->has('ban2')){{session()->get('ban2')->id}}@endif">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Module </label>
-                                        <select name="selmodule" class="form-control select2 categ"
+                                        <select name="selmodule" class="form-control select2 selmodule"
                                             style="width: 100%;">
                                             @if(session()->has('ban3'))
                                                 @if(session()->get('ban3') == '')                   
@@ -178,14 +174,14 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Sub Module Name</label>
-                                        <input type="text" name="submodule" value="@if(session()->has('ban2')){{session()->get('ban2')->submodule}}@endif{{old('submodule')}}" class="form-control" placeholder="Enter ...">
+                                        <input type="text" name="submodule" value="@if(session()->has('ban2')){{session()->get('ban2')->submodule}}@endif{{old('submodule')}}" class="form-control submodule" placeholder="Enter ...">
                                     </div>
                                 </div>                                 
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</button>
+                            <button type="button" class="btn btn-default modalclose2">Close</button>
+                            <button type="submit" class="btn btn-primary btnmodule2">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</button>
                         </div>
                     </form>
 
@@ -244,14 +240,14 @@
     @csrf 
     <input type="hidden" class="id_val" name="id">
 </form>
-<form method="post" action="{{route('updmodule')}}" class="sub_upd">
+<!-- <form method="post" action="{{route('updmodule')}}" class="sub_upd">
     @csrf
     <input type="hidden" class="upd_val" name="id">
-</form>
-<form method="post" action="{{route('updsubmodule')}}" class="sub_upd2">
+</form> -->
+<!-- <form method="post" action="{{route('updsubmodule')}}" class="sub_upd2">
     @csrf
     <input type="hidden" class="upd_val" name="id">
-</form>
+</form> -->
 <form method="post" action="{{ route('hidemodule') }}" class="sub_unavail">
     @csrf
     <input type="hidden" class="p1id" name="id">
@@ -270,7 +266,8 @@
 </form>
 @endsection
 @section('customjsfile')
-    <script>   
+    <script>  
+    
     $(document).on('click', '.delete', function(e) {
         e.preventDefault();
         var id = $(this).val();
@@ -289,6 +286,13 @@
             $('.sub_del2').submit();
         }
     });       
+    $(document).on('click', '.modalclose', function(e) {
+        $('#newmodule').modal('hide')
+        $('.id').val('')
+        $('.module').val('')
+        $('.btnmodule').html('Add Module')
+        $('.titlemodule').html('Add Module')
+    });
     $(document).on('click', '.upd', function(e) {
         e.preventDefault();
         var id = $(this).val();
@@ -303,16 +307,46 @@
                 'id': id,
                 _token: token            },
             success: function(msg) {
-               $('.id').val(msg.id)
-               $('.module').val(msg.module)
+                $('#newmodule').modal('show')
+                $('.id').val(msg.id)
+                $('.module').val(msg.module)
+                $('.btnmodule').html('Update Module')
+                $('.titlemodule').html('Update Module')
             }
         });
-    });      
+    });     
+    $(document).on('click', '.modalclose2', function(e) {
+        $('#newsubmodule').modal('hide')
+        $('.id2').val('')
+        $('.fopt').remove()
+        $('.submodule').val('')
+        $('.btnmodule2').html('Add Sub Module')
+        $('.titlemodule2').html('Add Sub Module')
+    }); 
     $(document).on('click', '.upd2', function(e) {
         e.preventDefault();
         var id = $(this).val();
-        $('input.upd_val').attr('value', id);
-        $('.sub_upd2').submit();
+        // $('input.upd_val').attr('value', id);
+        // $('.sub_upd2').submit();
+
+        let token = $('.token').val();
+        $.ajax({
+            'url': '{{route('updsubmodule')}}',
+            'type': 'post',
+            data: {
+                'id': id,
+                _token: token            },
+            dataType:'json',
+            success: function(msg){
+                console.log((msg[1]))
+                $('#newsubmodule').modal('show')
+                $('.id2').val(msg[0].id)
+                $('.submodule').val(msg[0].submodule)
+                $('.selmodule').html(msg[1])
+                $('.btnmodule2').html('Update Sub Module')
+                $('.titlemodule2').html('Update Sub Module')
+            }
+        });
     }); 
         $(document).on('click', '.available', function(e) {
             e.preventDefault();

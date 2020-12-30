@@ -57,6 +57,12 @@
                                 <p>Show Privilege </p>
                             </a>
                         </li>
+                        <li class="nav-item ">
+                            <a href="{{route('assignprivilege')}}" class="nav-link {{ (Request::segment(2) == 'assign-privilege') ? 'active' : ''}} {{ (Request::segment(2) == 'staff-privilege') ? 'active' : ''}}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Assign Privilege </p>
+                            </a>
+                        </li>
                     </ul>
                 </li>   
                
