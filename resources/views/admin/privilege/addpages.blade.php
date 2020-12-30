@@ -1,8 +1,12 @@
 @component('components.admin.master')
 @section('main-section')
+<!-- 
 
-
-
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+                  Launch Default Modal
+                </button> -->
+    
+    
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -34,7 +38,37 @@
                 </div>
                 @endif
             </div>
-            <div class="col-md-4">
+            <div class="modal fade" id="newmodule">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <form action="{{route('subaddmodule')}}" role="form" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" class="id" name="id" value="@if(session()->has('ban')){{session()->get('ban')->id}}@endif">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Module Name</label>
+                                        <input type="text" name="module" value="@if(session()->has('ban')){{session()->get('ban')->module}}@endif{{old('module')}}" class="form-control module" placeholder="Enter ...">
+                                    </div>
+                                </div>                                 
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-4">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">@if(session()->has('ban')) {{ 'Update Module' }}@else{{ 'Add Module'}}@endif</h3>
@@ -57,8 +91,10 @@
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="col-md-8">
+            </div> -->
+           
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-danger" style="margin-bottom: 10px;" data-toggle="modal" data-target="#newmodule"><i class="fas fa-plus"></i> Add New Module</button>
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Module</h3>
@@ -69,7 +105,6 @@
                                 <tr>
                                     <th>S.No</th>
                                     <th>Module</th>
-                                    <th>Date-Time</th>
                                     <th>Show-Hide</th>
                                     <th>Manage</th>
                                 </tr>
@@ -80,11 +115,84 @@
                         </table>
                     </div>
                 </div>
+            </div> 
+            
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-danger" style="margin-bottom: 10px;" data-toggle="modal" data-target="#newsubmodule"><i class="fas fa-plus"></i> Add New Sub Module</button>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Sub Module</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Module</th>
+                                    <th>Sub Module</th>
+                                    <th>Show-Hide</th>
+                                    <th>Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               {!! $tb2 !!}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>           
         </div>
         <hr>
         <div class="row">
-            <div class="col-md-4">
+
+            <div class="modal fade" id="newsubmodule">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <form action="{{route('subaddsubmodule')}}" role="form" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id" value="@if(session()->has('ban2')){{session()->get('ban2')->id}}@endif">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Module </label>
+                                        <select name="selmodule" class="form-control select2 categ"
+                                            style="width: 100%;">
+                                            @if(session()->has('ban3'))
+                                                @if(session()->get('ban3') == '')                   
+                                                    <option value="nomodule">No Module</option>
+                                                @else
+                                                    <option value="{{session()->get('ban3')->id}}">{{session()->get('ban3')->module}}</option>
+                                                @endif
+                                            @endif
+                                            {!! $mod !!}                                            
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Sub Module Name</label>
+                                        <input type="text" name="submodule" value="@if(session()->has('ban2')){{session()->get('ban2')->submodule}}@endif{{old('submodule')}}" class="form-control" placeholder="Enter ...">
+                                    </div>
+                                </div>                                 
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</button>
+                        </div>
+                    </form>
+
+                </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-4">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">@if(session()->has('ban2')) {{ 'Update Sub Module' }}@else{{ 'Add Sub Module'}}@endif</h3>
@@ -123,30 +231,8 @@
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Sub Module</h3>
-                    </div>
-                    <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>S.No</th>
-                                    <th>Module</th>
-                                    <th>Sub Module</th>
-                                    <th>Show-Hide</th>
-                                    <th>Manage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               {!! $tb2 !!}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> 
+            </div> -->
+            
         </div>
     </div>
 </section>
@@ -166,30 +252,30 @@
     @csrf
     <input type="hidden" class="upd_val" name="id">
 </form>
+<form method="post" action="{{ route('hidemodule') }}" class="sub_unavail">
+    @csrf
+    <input type="hidden" class="p1id" name="id">
+</form>
+<form method="post" action="{{ route('showmodule') }}" class="sub_avail">
+    @csrf
+    <input type="hidden" class="p1id2" name="id">
+</form>
+<form method="post" action="{{ route('hidesubmodule') }}" class="sub_unavail2">
+    @csrf
+    <input type="hidden" class="p1id" name="id">
+</form>
+<form method="post" action="{{ route('showsubmodule') }}" class="sub_avail2">
+    @csrf
+    <input type="hidden" class="p1id2" name="id">
+</form>
 @endsection
 @section('customjsfile')
-    <script>
-    $(function(){
-        $('.chanpass').css({'display':'none'});
-        $(document).on('click', '.resetpass', function(e) {
-            e.preventDefault();
-            $('.chanpass').css({'display':'block'});
-            $(this).html('Not Reset Password.');
-            $(this).removeClass('resetpass');
-            $(this).addClass('notresetpass');
-        });
-        $(document).on('click', '.notresetpass', function(e) {
-            e.preventDefault();
-            $('.chanpass').css({'display':'none'});
-            $(this).html('Reset Password?');
-            $(this).removeClass('notresetpass');
-            $(this).addClass('resetpass');
-        });
-    });
+    <script>   
     $(document).on('click', '.delete', function(e) {
         e.preventDefault();
         var id = $(this).val();
-        if (window.confirm("Are you sure, you want to delete?")) {
+        const modulename = $(this).parent('div').parent('td').siblings('td').children('.modulename').val();
+        if (window.confirm("Are you sure, you want to delete `"+modulename+"`?")) {
             $('input.id_val').attr('value', id);
             $('.sub_del').submit();
         }
@@ -197,7 +283,8 @@
     $(document).on('click', '.delete2', function(e) {
         e.preventDefault();
         var id = $(this).val();
-        if (window.confirm("Are you sure, you want to delete?")) {
+        const submodulename = $(this).parent('div').parent('td').siblings('td').children('.submodulename').val();
+        if (window.confirm("Are you sure, you want to delete `"+submodulename+"`?")) {
             $('input.id_val').attr('value', id);
             $('.sub_del2').submit();
         }
@@ -205,8 +292,21 @@
     $(document).on('click', '.upd', function(e) {
         e.preventDefault();
         var id = $(this).val();
-        $('input.upd_val').attr('value', id);
-        $('.sub_upd').submit();
+        //$('input.upd_val').attr('value', id);
+       // $('.sub_upd').submit();
+
+        let token = $('.token').val();
+        $.ajax({
+            'url': '{{route('updmodule')}}',
+            'type': 'post',
+            data: {
+                'id': id,
+                _token: token            },
+            success: function(msg) {
+               $('.id').val(msg.id)
+               $('.module').val(msg.module)
+            }
+        });
     });      
     $(document).on('click', '.upd2', function(e) {
         e.preventDefault();
@@ -214,7 +314,42 @@
         $('input.upd_val').attr('value', id);
         $('.sub_upd2').submit();
     }); 
-
+        $(document).on('click', '.available', function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            const modulename = $(this).parent('td').siblings('td').children('.modulename').val();
+            if (window.confirm("Are you sure, you want to Hide `"+modulename+"` Module?")) {
+                $('input.p1id').attr('value', id);
+                $('.sub_unavail').submit();
+            }
+        });
+        $(document).on('click', '.unavailable', function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            const modulename = $(this).parent('td').siblings('td').children('.modulename').val();
+            if (window.confirm("Are you sure, you want to Show `"+modulename+"` Module?")) {
+                $('input.p1id2').attr('value', id);
+                $('.sub_avail').submit();
+            }
+        });
+        $(document).on('click', '.available2', function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            const submodulename = $(this).parent('td').siblings('td').children('.submodulename').val();
+            if (window.confirm("Are you sure, you want to Hide `"+submodulename+"` Sub Module?")) {
+                $('input.p1id').attr('value', id);
+                $('.sub_unavail2').submit();
+            }
+        });
+        $(document).on('click', '.unavailable2', function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            const submodulename = $(this).parent('td').siblings('td').children('.submodulename').val();
+            if (window.confirm("Are you sure, you want to Show `"+submodulename+"` Sub Module?")) {
+                $('input.p1id2').attr('value', id);
+                $('.sub_avail2').submit();
+            }
+        });
     </script>
 @endsection
 @endcomponent

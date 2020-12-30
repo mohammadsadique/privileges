@@ -28,6 +28,10 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::post('/delsubmodule',[ PrivilegesC::class, 'delsubmodule'])->name('delsubmodule');
     Route::post('/updmodule',[ PrivilegesC::class, 'updmodule'])->name('updmodule');
     Route::post('/updsubmodule',[ PrivilegesC::class, 'updsubmodule'])->name('updsubmodule');
+    Route::post('/showmodule',[ PrivilegesC::class, 'showmodule'])->name('showmodule');
+    Route::post('/hidemodule',[ PrivilegesC::class, 'hidemodule'])->name('hidemodule');
+    Route::post('/showsubmodule',[ PrivilegesC::class, 'showsubmodule'])->name('showsubmodule');
+    Route::post('/hidesubmodule',[ PrivilegesC::class, 'hidesubmodule'])->name('hidesubmodule');
 
 
     // Staff

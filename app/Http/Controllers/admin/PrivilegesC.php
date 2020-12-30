@@ -60,8 +60,12 @@ class PrivilegesC extends Controller
                 </div>
             </div>';
         }
-        
-        return view('admin.privilege.showprivilege',compact('mod','mod2'));
+        $hr = '';
+        $d = Privileges::where(['tag'=>0,'onoff'=>1])->count();
+        if($d > 0){
+            $hr = '<div class="col-md-12"><br><hr></div>';
+        }
+        return view('admin.privilege.showprivilege',compact('mod','mod2','hr'));
     }
 
     public function addpages()
@@ -71,20 +75,19 @@ class PrivilegesC extends Controller
         $t = Privileges::where('status',1)->get();
         foreach($t as $val){
           if($val->onoff == 1){
-              $btn = '<button type="submit" class="btn btn-success">Show</button>';
+              $btn = '<button type="submit" value="'.$val->id.'" class="btn btn-success available">Show</button>';
           } else {
-              $btn = '<button type="submit" class="btn btn-secondary">Hide</button>';
+              $btn = '<button type="submit" value="'.$val->id.'" class="btn btn-secondary unavailable">Hide</button>';
           }
           $tb .= 
           '<tr>
               <td>'.$i.'</td>
-              <td style="text-align: center;">'.$val->module.'</td>
-              <td style="text-align: center;">'.$val->updated_at.'</td>
+              <td style="text-align: center;">'.$val->module.'<input type="hidden" value="'.$val->module.'" class="modulename"></td>
               <td style="text-align: center;">'.$btn.'</td>
               <td style="text-align: center;">
                   <div class="btn-group">
                       <button type="submit" value="'.$val->id.'" class="btn btn-danger delete"><i class="fas fa-trash"></i></button>
-                      <button type="submit" value="'.$val->id.'" class="btn btn-warning upd"><i class="fas fa-edit"></i></button>                
+                      <button type="button" value="'.$val->id.'" class="btn btn-warning upd" data-toggle="modal" data-target="#newmodule"><i class="fas fa-edit"></i></button>                
                   </div>
               </td>
           </tr>';
@@ -105,9 +108,9 @@ class PrivilegesC extends Controller
         $t2 = Privileges::where('status',0)->get();
         foreach($t2 as $val){
           if($val->onoff == 1){
-            $btn = '<button type="submit" class="btn btn-success">Show</button>';
+            $btn = '<button type="submit" value="'.$val->id.'" class="btn btn-success available2">Show</button>';
           } else {
-              $btn = '<button type="submit" class="btn btn-secondary">Hide</button>';
+            $btn = '<button type="submit" value="'.$val->id.'" class="btn btn-secondary unavailable2">Hide</button>';
           }
           if($val->tag > 0){
               $c = Privileges::where('id',$val->tag)->first();
@@ -120,7 +123,7 @@ class PrivilegesC extends Controller
           '<tr>
               <td>'.$i2.'</td>
               <td style="text-align: center;">'.$module.'</td>
-              <td style="text-align: center;">'.$val->submodule.'</td>
+              <td style="text-align: center;">'.$val->submodule.'<input type="hidden" value="'.$val->submodule.'" class="submodulename"></td>
               <td style="text-align: center;">'.$btn.'</td>
               <td style="text-align: center;">
                   <div class="btn-group">
@@ -222,8 +225,9 @@ class PrivilegesC extends Controller
 
     public function updmodule(Request $request){
         $id = $request->id; 
-		$ccv = Privileges::select('*')->where('id',$id)->first(); 
-		return redirect()->back()->with('ban' , $ccv );
+        $ccv = Privileges::select('*')->where('id',$id)->first(); 
+        return $ccv;
+		// return redirect()->back()->with('ban' , $ccv );
     }
     public function updsubmodule(Request $request){
         $id = $request->id; 
@@ -232,6 +236,45 @@ class PrivilegesC extends Controller
         // dd($b);
         //$mod = '<option value="'.$b->id.'">'.$b->module.'</option>'; 
 		return redirect()->back()->with(['ban2' => $a , 'ban3' => $b ]);
+    }
+
+    public function showmodule(Request $request)
+    {
+        $id = $request->id;
+        $ee = Privileges::find($id);
+        $ee->onoff = 1;
+        $ee->save();
+        $a = Privileges::where('id',$id)->first();
+        Privileges::where('tag',$a->tag)->update(['onoff' => 1]);
+        return redirect()->back()->with('success', 'Module show successfully!');	
+    }
+    public function hidemodule(Request $request)
+    {
+        $id = $request->id;
+        $ee = Privileges::find($id);
+        $ee->onoff = 0;
+        $ee->save();
+        $a = Privileges::where('id',$id)->first();
+        Privileges::where('tag',$a->tag)->update(['onoff' => 0]);
+       
+        return redirect()->back()->with('success', 'Module hide successfully!');	
+    }
+    public function showsubmodule(Request $request)
+    {
+        $id = $request->id;
+        $ee = Privileges::find($id);
+        $ee->onoff = 1;
+        $ee->save();
+        return redirect()->back()->with('success', 'Sub Module show successfully!');	
+    }
+    public function hidesubmodule(Request $request)
+    {
+        $id = $request->id;
+        $ee = Privileges::find($id);
+        $ee->onoff = 0;
+        $ee->save();
+       
+        return redirect()->back()->with('success', 'Sub Module hide successfully!');	
     }
 }
 
