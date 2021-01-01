@@ -3,7 +3,7 @@
 
 
 <style>
-.snackbar {
+#snackbar {
   visibility: hidden;
   min-width: 250px;
   margin-left: -125px;
@@ -19,7 +19,7 @@
   font-size: 17px;
 }
 
-.snackbar.show {
+#snackbar.show {
   visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -71,8 +71,7 @@
     </div>
 </section>
 <input type="hidden" class="staffid" value="{!! $staff->id !!}">
-
-<div class="snackbar">Some text some message..</div>
+<div id="snackbar">Some text some message..</div>
 @endsection
 
 
@@ -82,18 +81,99 @@
 
 
     <script>
+          $('.singleSubMod').click(function() {
+            const tabname = $(this).val();
+            const token = $('.token').val();
+            const staffid = $('.staffid').val();
+            if ($(this).is(':checked')) {
+                $('input[id='+tabname+']').prop('checked', true);
+                          $.ajax({
+                              'url': '{{route('assignsubmodule')}}',
+                              'type': 'post',
+                              data: {
+                                  'id': tabname,
+                                  'staffid': staffid,
+                                  _token: token            },
+                              success: function(msg) {
+                                  if(msg == 1){
+                                    const ms = 'Assign privileges successfully.';
+                                    $('#snackbar').addClass('show');
+                                    $('#snackbar').html(ms);
+                                    setTimeout(function(){ $('#snackbar').removeClass('show');  } , 3000);                             
+                                  }
+                              }
+                          });
+            } else {
+                $('input[id='+tabname+']').prop('checked', false);
+
+                          $.ajax({
+                              'url': '{{route('removesubmodule')}}',
+                              'type': 'post',
+                              data: {
+                                  'id': tabname,
+                                  'staffid': staffid,
+                                  _token: token            },
+                              success: function(msg) { console.log(msg)
+                                  if(msg == 1){
+                                    const ms = 'Remove privileges successfully.';
+                                    $('#snackbar').addClass('show');
+                                    $('#snackbar').html(ms);
+                                    setTimeout(function(){ $('#snackbar').removeClass('show');  } , 3000);                             
+                                  }
+                              }
+                          });
+            }
+          })
+
+
           $('#checkall').click(function() {
             const tabname = $(this).val();
+            const token = $('.token').val();
+            const staffid = $('.staffid').val();
             //console.log(tabname)
             if ($(this).is(':checked')) {
               $('input:checkbox').prop('checked', true);
+              console.log(tabname)
+                          $.ajax({
+                              'url': '{{route('Allassignmodule')}}',
+                              'type': 'post',
+                              data: {
+                                  'id': tabname,
+                                  'staffid': staffid,
+                                  _token: token            },
+                              success: function(msg) { 
+                                  if(msg == 1){ 
+                                    const ms = 'All privileges assign successfully.';
+                                    $('#snackbar').addClass('show');
+                                    $('#snackbar').html(ms);
+                                    setTimeout(function(){ $('#snackbar').removeClass('show');  } , 3000);                             
+                                  }
+                              }
+                          });
             } else {
                 $('input:checkbox').prop('checked', false);
+
+                          $.ajax({
+                              'url': '{{route('Allremovemodule')}}',
+                              'type': 'post',
+                              data: {
+                                  'id': tabname,
+                                  'staffid': staffid,
+                                  _token: token            },
+                              success: function(msg) { 
+                                  if(msg == 1){ 
+                                    const ms = 'All privileges remove successfully.';
+                                    $('#snackbar').addClass('show');
+                                    $('#snackbar').html(ms);
+                                    setTimeout(function(){ $('#snackbar').removeClass('show');  } , 3000);                             
+                                  }
+                              }
+                          });
             }
         });
         $('.selectall').click(function() {
             const tabname = $(this).val();
-            let token = $('.token').val();
+            const token = $('.token').val();
             const staffid = $('.staffid').val();
             // console.log(tabname)
             if ($(this).is(':checked')) {
@@ -107,9 +187,11 @@
                                   'staffid': staffid,
                                   _token: token            },
                               success: function(msg) {
-                                  if(msg === 1){
+                                  if(msg == 1){
                                     const ms = 'Assign privileges successfully.';
-                                    myFunction(ms)                               
+                                    $('#snackbar').addClass('show');
+                                    $('#snackbar').html(ms);
+                                    setTimeout(function(){ $('#snackbar').removeClass('show');  } , 3000);                             
                                   }
                               }
                           });
@@ -127,9 +209,11 @@
                                   'staffid': staffid,
                                   _token: token            },
                               success: function(msg) {
-                                  if(msg === 1){
-                                    const ms = 'Not assign privileges successfully.';
-                                    myFunction(ms)
+                                  if(msg == 1){
+                                    const ms = 'Removed assign privileges successfully.';
+                                    $('#snackbar').addClass('show');
+                                    $('#snackbar').html(ms);
+                                    setTimeout(function(){ $('#snackbar').removeClass('show');  } , 3000);     
                                   }
                               }
                           });
@@ -146,12 +230,10 @@
                     Phone: {!! $staff->mobile !!} 
                     `
         })
-        function myFunction(data) {
-          var x = document.getElementByClass("snackbar");
-          x.innerHTML(data)
-          x.className = "show";
-          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-        }
+        
+
+       
+
 
     </script>
 

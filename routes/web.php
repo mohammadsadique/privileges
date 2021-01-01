@@ -38,6 +38,10 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::get('/privilege/staff-privilege/{id}',[ Privileges2C::class, 'staffprivilege'])->name('staffprivilege');
     Route::post('/assignmodule',[ Privileges2C::class, 'assignmodule'])->name('assignmodule');
     Route::post('/notassignmodule',[ Privileges2C::class, 'notassignmodule'])->name('notassignmodule');
+    Route::post('/Allassignmodule',[ Privileges2C::class, 'Allassignmodule'])->name('Allassignmodule');
+    Route::post('/Allremovemodule',[ Privileges2C::class, 'Allremovemodule'])->name('Allremovemodule');
+    Route::post('/assignsubmodule',[ Privileges2C::class, 'assignsubmodule'])->name('assignsubmodule');
+    Route::post('/removesubmodule',[ Privileges2C::class, 'removesubmodule'])->name('removesubmodule');
 
 
     // Staff

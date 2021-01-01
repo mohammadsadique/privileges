@@ -90,7 +90,7 @@ class Privileges2C extends Controller
                             <div class="col-sm-12">
                               <div class="form-group clearfix">
                                 <div class="icheck-success d-inline">
-                                  <input type="checkbox" name="'.$getsubmod->tag.'" id="'.$getsubmod->id.'" '.$check.'>
+                                  <input type="checkbox" class="singleSubMod" value="'.$getsubmod->id.'" name="'.$getsubmod->tag.'" id="'.$getsubmod->id.'" '.$check.'>
                                   <label for="'.$getsubmod->id.'">'.$getsubmod->submodule.'</label>
                                 </div>                     
                               </div>
@@ -111,7 +111,7 @@ class Privileges2C extends Controller
                 <div class="card card-success">
                     <div class="card-header">       
                         <div class="icheck-default d-inline" >
-                            <input type="checkbox" value="'.$cc->id.'" id="'.$cc->id.'" class="selectall">
+                            <input type="checkbox" class="singleSubMod" value="'.$cc->id.'" id="'.$cc->id.'" class="selectall">
                             <label for="'.$cc->id.'"><h3 class="card-title">'.$cc->submodule.'</h3></label>
                         </div>
                     </div>
@@ -197,6 +197,78 @@ class Privileges2C extends Controller
         $a3 = array_diff($f,$a2);
         $pri_id = implode(',',$a3);
         Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
+
+        $staff2 = Login::where('id',$staffid)->first();
+        if(empty($staff2->privilege_id)){
+            $privilege_id = null;
+            Login::where('id',$staffid)->update(['privilege_id' => $privilege_id]);
+        }
+        return 1;
+    }
+
+
+    public function Allassignmodule(Request $request)
+    {
+        $id = $request->id;
+        $staffid = $request->staffid;
+        $pri_id = '';
+        Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
+        $privilege_id = '';
+        $a = Privileges::where(['onoff'=>1])->get();
+        foreach($a as $aa){
+            if(!empty($privilege_id)){
+                $privilege_id .= ','.$aa->id;
+            } else {
+                $privilege_id .= $aa->id;
+            }
+        }
+        Login::where('id',$staffid)->update(['privilege_id' => $privilege_id]);
+        return 1;
+    }
+
+    public function Allremovemodule(Request $request)
+    {
+        $id = $request->id;
+        $staffid = $request->staffid;
+        $pri_id = null;
+        Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
+        return 1;
+    }
+
+
+
+    public function assignsubmodule(Request $request)
+    {
+        $id = $request->id;
+        $staffid = $request->staffid;
+        $staff = Login::where('id',$staffid)->first();        
+        if(!empty($staff->privilege_id)){
+            $pri_id = $staff->privilege_id.','.$id;
+        } else {
+            $pri_id = $id;
+        }
+        Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
+        return 1;
+    }
+
+
+    public function removesubmodule(Request $request)
+    {
+        $id = $request->id;
+        $staffid = $request->staffid;
+        $staff = Login::where('id',$staffid)->first();
+        $f = explode(',',$staff->privilege_id);
+        $a2 = explode(',',$id);
+        $a3 = array_diff($f,$a2); 
+        $pri_id = implode(',',$a3);      
+        
+        Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
+
+        $staff2 = Login::where('id',$staffid)->first();
+        if(empty($staff2->privilege_id)){
+            $privilege_id = null;
+            Login::where('id',$staffid)->update(['privilege_id' => $privilege_id]);
+        }
         return 1;
     }
 }
