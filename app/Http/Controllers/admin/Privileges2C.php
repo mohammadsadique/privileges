@@ -51,7 +51,13 @@ class Privileges2C extends Controller
         $staff = Login::where('id',$id)->first();
         $f = explode(',',$staff->privilege_id);
        
+        // $a = array(14,16,22);
+        // $b = array(14.16,17);
 
+        // $c = array_intersect($a,$b);
+        // print_r($c);
+
+        // die;
 
         $mod = '';
         $getmodules = Privileges::where(['status'=>1,'onoff'=>1])->get();
@@ -123,4 +129,74 @@ class Privileges2C extends Controller
         return view('admin.privilege.staffprivilege',compact('mod','mod2','hr','staff'));
     }
 
+
+    public function assignmodule(Request $request)
+    {
+        $id = $request->id;
+        $staffid = $request->staffid;
+
+        $staff = Login::where('id',$staffid)->first();
+        $f = explode(',',$staff->privilege_id);
+
+        $check = '';
+        $privilege_id = '';
+        $a = Privileges::where(['tag'=>$id,'onoff'=>1])->get();
+        foreach($a as $aa){
+            if(in_array($aa->id , $f)) 
+            {
+                // $check .= "1-".$aa->id.','; 
+            } else {
+                // $check .= "0-".$aa->id.',';
+                if(!empty($staff->privilege_id)){
+                    if(!empty($privilege_id)){
+                        $privilege_id .= ','.$aa->id;
+                    } else {
+                        $privilege_id .= $staff->privilege_id.','.$aa->id;
+                    }
+                } else {
+                    if(!empty($privilege_id)){
+                        $privilege_id .= ','.$aa->id;
+                    } else {
+                        $privilege_id .= $aa->id;
+                    }
+                }
+                $privilege_id;
+            }
+        }
+        Login::where('id',$staffid)->update(['privilege_id' => $privilege_id]);
+        return 1;
+    }
+
+
+
+    public function notassignmodule(Request $request)
+    {
+        $id = $request->id;
+        $staffid = $request->staffid;
+
+        $staff = Login::where('id',$staffid)->first();
+        $f = explode(',',$staff->privilege_id);
+
+        
+
+        
+        $privilege_id = '';
+        $a = Privileges::where(['tag'=>$id,'onoff'=>1])->get();
+        foreach($a as $aa){
+            if(in_array($aa->id , $f)) 
+            {
+                if(!empty($privilege_id)){
+                    $privilege_id .= ','.$aa->id;
+                } else {
+                    $privilege_id .= $aa->id;
+                }
+            }
+        }
+        $a2 = explode(',',$privilege_id);
+
+        $a3 = array_diff($f,$a2);
+        $pri_id = implode(',',$a3);
+        Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
+        return 1;
+    }
 }

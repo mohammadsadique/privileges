@@ -36,6 +36,8 @@ Route::middleware([CheckAdminLogin::class])->group(function () {
     Route::get('/privilege/assign-privilege',[ Privileges2C::class, 'assignprivilege'])->name('assignprivilege');
     Route::post('/subassignpri',[ Privileges2C::class, 'subassignpri'])->name('subassignpri');
     Route::get('/privilege/staff-privilege/{id}',[ Privileges2C::class, 'staffprivilege'])->name('staffprivilege');
+    Route::post('/assignmodule',[ Privileges2C::class, 'assignmodule'])->name('assignmodule');
+    Route::post('/notassignmodule',[ Privileges2C::class, 'notassignmodule'])->name('notassignmodule');
 
 
     // Staff
