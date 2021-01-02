@@ -36,6 +36,24 @@
 
 
     <script>
+          $('.singleSubMod').click(function() {
+            const tabname = $(this).val();
+            const name = $(this).attr('name')
+            if ($(this).is(':checked')) {
+                $('input[id='+tabname+']').prop('checked', true);
+                const TotalName = $('input[name='+name+']').length;
+                const a = TotalName - 1;
+                const submoduleCheck =  $('input[name='+name+']').filter(':checked').length;
+                if(submoduleCheck == a){
+                  $('input[id='+name+']').prop('checked', true);
+                }
+            } else {
+                $('input[id='+tabname+']').prop('checked', false);
+                $('input[id='+name+']').prop('checked', false);
+                
+            }
+          })
+
           $('#checkall').click(function() {
             const tabname = $(this).val();
             //console.log(tabname)

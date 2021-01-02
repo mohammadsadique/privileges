@@ -85,14 +85,26 @@
             const tabname = $(this).val();
             const token = $('.token').val();
             const staffid = $('.staffid').val();
+            const name = $(this).attr('name');
+            let moduleid = '';
             if ($(this).is(':checked')) {
                 $('input[id='+tabname+']').prop('checked', true);
+                const TotalName = $('input[name='+name+']').length;
+                const a = TotalName - 1;
+                const submoduleCheck =  $('input[name='+name+']').filter(':checked').length;  console.log(TotalName)              
+                if(submoduleCheck == a){
+                  $('input[id='+name+']').prop('checked', true);
+                  moduleid = name;
+                }
+
+
                           $.ajax({
                               'url': '{{route('assignsubmodule')}}',
                               'type': 'post',
                               data: {
                                   'id': tabname,
                                   'staffid': staffid,
+                                  'moduleid': moduleid,
                                   _token: token            },
                               success: function(msg) {
                                   if(msg == 1){
@@ -105,15 +117,17 @@
                           });
             } else {
                 $('input[id='+tabname+']').prop('checked', false);
-
+                $('input[id='+name+']').prop('checked', false);
+                moduleid = name;
                           $.ajax({
                               'url': '{{route('removesubmodule')}}',
                               'type': 'post',
                               data: {
                                   'id': tabname,
                                   'staffid': staffid,
+                                  'moduleid': moduleid,
                                   _token: token            },
-                              success: function(msg) { console.log(msg)
+                              success: function(msg) { //console.log(msg)
                                   if(msg == 1){
                                     const ms = 'Remove privileges successfully.';
                                     $('#snackbar').addClass('show');

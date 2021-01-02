@@ -21,7 +21,7 @@ class PrivilegesC extends Controller
                 <div class="card card-success">
                     <div class="card-header">       
                         <div class="icheck-default d-inline" >
-                            <input type="checkbox" value="'.$getmodule->tag.'" id="'.$getmodule->id.'" class="selectall">
+                            <input type="checkbox" name="'.$getmodule->tag.'" value="'.$getmodule->tag.'" id="'.$getmodule->id.'" class="selectall">
                             <label for="'.$getmodule->id.'"><h3 class="card-title">'.$getmodule->module.'</h3></label>
                         </div>
                     </div>
@@ -32,7 +32,7 @@ class PrivilegesC extends Controller
                             <div class="col-sm-12">
                               <div class="form-group clearfix">
                                 <div class="icheck-success d-inline">
-                                  <input type="checkbox" name="'.$getsubmod->tag.'" id="'.$getsubmod->id.'">
+                                  <input type="checkbox" class="singleSubMod" value="'.$getsubmod->id.'" name="'.$getsubmod->tag.'" id="'.$getsubmod->id.'">
                                   <label for="'.$getsubmod->id.'">'.$getsubmod->submodule.'</label>
                                 </div>                     
                               </div>
@@ -53,7 +53,7 @@ class PrivilegesC extends Controller
                 <div class="card card-success">
                     <div class="card-header">       
                         <div class="icheck-default d-inline" >
-                            <input type="checkbox" value="'.$cc->id.'" id="'.$cc->id.'" class="selectall">
+                            <input type="checkbox" class="singleSubMod" value="'.$cc->id.'" value="'.$cc->id.'" id="'.$cc->id.'" class="selectall">
                             <label for="'.$cc->id.'"><h3 class="card-title">'.$cc->submodule.'</h3></label>
                         </div>
                     </div>

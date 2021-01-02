@@ -74,7 +74,7 @@ class Privileges2C extends Controller
                 <div class="card card-success">
                     <div class="card-header">       
                         <div class="icheck-default d-inline" >
-                            <input type="checkbox" value="'.$getmodule->tag.'" id="'.$getmodule->id.'" class="selectall" '.$check2.'>
+                            <input type="checkbox" name="'.$getmodule->id.'" value="'.$getmodule->tag.'" id="'.$getmodule->id.'" class="selectall" '.$check2.'>
                             <label for="'.$getmodule->id.'"><h3 class="card-title">'.$getmodule->module.'</h3></label>
                         </div>
                     </div>
@@ -240,6 +240,7 @@ class Privileges2C extends Controller
     public function assignsubmodule(Request $request)
     {
         $id = $request->id;
+        $moduleid = $request->moduleid;
         $staffid = $request->staffid;
         $staff = Login::where('id',$staffid)->first();        
         if(!empty($staff->privilege_id)){
@@ -247,7 +248,12 @@ class Privileges2C extends Controller
         } else {
             $pri_id = $id;
         }
-        Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
+        if(!empty($moduleid)){
+            $privilege_id = $pri_id.','.$moduleid;
+        } else {
+            $privilege_id = $pri_id;
+        }
+        Login::where('id',$staffid)->update(['privilege_id' => $privilege_id]);
         return 1;
     }
 
@@ -255,12 +261,17 @@ class Privileges2C extends Controller
     public function removesubmodule(Request $request)
     {
         $id = $request->id;
+        $moduleid = $request->moduleid;
         $staffid = $request->staffid;
         $staff = Login::where('id',$staffid)->first();
         $f = explode(',',$staff->privilege_id);
         $a2 = explode(',',$id);
         $a3 = array_diff($f,$a2); 
-        $pri_id = implode(',',$a3);      
+        //$pri_id = implode(',',$a3);    
+        
+        $b1 = explode(',',$moduleid);
+        $b2 = array_diff($a3,$b1); 
+        $pri_id = implode(',',$b2);
         
         Login::where('id',$staffid)->update(['privilege_id' => $pri_id]);
 
