@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2020 at 05:01 PM
+-- Generation Time: Jan 02, 2021 at 04:28 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -37,7 +37,8 @@ CREATE TABLE `logins` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mobile` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci,
+  `privilege_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,11 +47,12 @@ CREATE TABLE `logins` (
 -- Dumping data for table `logins`
 --
 
-INSERT INTO `logins` (`id`, `logid`, `role`, `name`, `email`, `password`, `image`, `mobile`, `address`, `created_at`, `updated_at`) VALUES
-(1, 0, 'admin', 'MD Sadique', 'admin@gmail.com', '$2y$10$JMzg9tcZfQlVCQx5XWDDRu7furkDMa5ie.RKPcLG/A5jmrhS/3Nu2', '1609070414-20201109114739-avatar2.png', '7748012831', '', '2020-12-27 12:00:50', '2020-12-27 12:00:50'),
-(3, 1, 'staff', 'nicky nande', 'rajdansena@gmail.com', '$2y$10$gLr4YptQ8Qgi/4nL3hbCtuWnF9ow1CWYTNsy5QmFkjbL4a2PN4sJ2', '1606220908-c807dd05-6527-4c16-a2c1-68dab94c58c7.jpg', '8435210988', 'tiwari complex near shiv talkies chowk bilaspur', '2020-11-24 19:28:28', '2020-11-24 19:28:28'),
-(4, 1, 'staff', 'Prince agrawal', 'admin@gmail.com', '$2y$10$PUaX9Z1MRWeLVcg8galU2.1UVkoMQQVEfFX8S6mkMUUldCorG0yi6', NULL, '', 'bilaspur', '2020-12-24 18:27:29', '2020-12-24 18:27:29'),
-(5, 1, 'staff', 'nicky nande', 'huma@gmail.com', '$2y$10$bEddadkeFenavTg0kN3iNuN2v1qOah4XF4FNPvG3yZ5Brmz0UdnIy', NULL, '8435210988', 'tiwari complex near shiv talkies chowk bilaspur', '2020-12-19 21:05:22', '2020-12-19 21:05:22');
+INSERT INTO `logins` (`id`, `logid`, `role`, `name`, `email`, `password`, `image`, `mobile`, `address`, `privilege_id`, `created_at`, `updated_at`) VALUES
+(1, 0, 'admin', 'MD Sadique', 'admin@gmail.com', '$2y$10$JMzg9tcZfQlVCQx5XWDDRu7furkDMa5ie.RKPcLG/A5jmrhS/3Nu2', '1609070414-20201109114739-avatar2.png', '7748012831', '', '14,16,17', '2020-12-27 12:00:50', '2020-12-27 12:00:50'),
+(3, 1, 'staff', 'nicky nande', 'rajdansena@gmail.com', '$2y$10$gLr4YptQ8Qgi/4nL3hbCtuWnF9ow1CWYTNsy5QmFkjbL4a2PN4sJ2', '1606220908-c807dd05-6527-4c16-a2c1-68dab94c58c7.jpg', '8435210988', 'tiwari complex near shiv talkies chowk bilaspur', NULL, '2020-11-24 19:28:28', '2020-11-24 19:28:28'),
+(4, 1, 'staff', 'Prince agrawal', 'admin@gmail.com', '$2y$10$PUaX9Z1MRWeLVcg8galU2.1UVkoMQQVEfFX8S6mkMUUldCorG0yi6', NULL, '', 'bilaspur', '', '2020-12-24 18:27:29', '2020-12-24 18:27:29'),
+(5, 1, 'staff', 'nicky nande', 'huma@gmail.com', '$2y$10$bEddadkeFenavTg0kN3iNuN2v1qOah4XF4FNPvG3yZ5Brmz0UdnIy', NULL, '8435210988', 'tiwari complex near shiv talkies chowk bilaspur', '25', '2020-12-19 21:05:22', '2021-01-02 15:24:50'),
+(6, 1, 'staff', 'MD Sadique', 'demo@gmail.com', '$2y$10$7YybBlTBY79mihKIVAi/j.Mt1EIg0TDT4DEjBDwgQ8gmQm9pLzCdq', NULL, '9999999999', NULL, '14,13,27,26,31,19,7,25', '2020-12-30 13:12:54', '2021-01-02 15:22:05');
 
 -- --------------------------------------------------------
 
@@ -131,30 +133,25 @@ CREATE TABLE `privileges` (
 --
 
 INSERT INTO `privileges` (`id`, `module`, `submodule`, `status`, `tag`, `onoff`, `created_at`, `updated_at`) VALUES
-(1, 'Admission', NULL, 1, 1, 1, NULL, NULL),
-(2, NULL, 'Direct Registration', 0, 1, 1, NULL, NULL),
-(3, NULL, 'View Registration History', 0, 1, 1, NULL, NULL),
-(4, 'Transport', NULL, 1, 4, 1, '2020-12-28 14:45:04', '2020-12-28 14:45:04'),
-(7, 'Account', NULL, 1, 7, 0, '2020-12-28 14:48:23', '2020-12-28 14:48:23'),
-(8, NULL, 'Direct Transport Registration', 0, 4, 1, '2020-12-28 15:34:42', '2020-12-28 15:34:42');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `s_add_staff`
---
-
-CREATE TABLE `s_add_staff` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `logid` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobile` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(7, 'Account', NULL, 1, 7, 1, '2020-12-30 11:50:46', '2020-12-30 11:50:46'),
+(13, 'Transport', NULL, 1, 13, 1, '2020-12-29 16:50:35', '2020-12-29 16:50:35'),
+(14, NULL, 'Direct Transport Registration', 0, 13, 1, '2020-12-29 18:02:03', '2020-12-29 18:02:03'),
+(15, 'Admission', NULL, 1, 15, 1, '2020-12-29 16:52:14', '2020-12-30 05:54:08'),
+(16, NULL, 'Direct Registration', 0, 15, 1, '2020-12-29 17:59:12', '2020-12-30 05:59:35'),
+(17, NULL, 'View Registration History', 0, 15, 1, '2020-12-29 16:52:47', '2020-12-30 05:54:08'),
+(18, 'HR', NULL, 1, 18, 1, '2020-12-30 12:52:11', '2020-12-30 12:52:11'),
+(19, NULL, 'Register New Employee', 0, 7, 1, '2021-01-01 10:45:40', '2021-01-01 10:45:40'),
+(20, NULL, 'Loan Apply Form', 0, 18, 1, '2020-12-29 16:55:00', '2020-12-30 06:15:21'),
+(21, NULL, 'Emp Details & Salary Update', 0, 18, 1, '2020-12-29 16:55:12', '2020-12-29 16:55:12'),
+(22, 'Result', NULL, 1, 22, 1, '2020-12-29 16:55:44', '2020-12-29 16:55:44'),
+(23, NULL, 'Create Result', 0, 22, 1, '2020-12-29 16:56:00', '2020-12-29 16:56:00'),
+(24, NULL, 'Create Result by Teacher', 0, 22, 1, '2020-12-29 16:56:11', '2020-12-29 16:56:11'),
+(25, NULL, 'SMS', 0, 0, 1, '2020-12-29 18:00:14', '2020-12-30 06:04:24'),
+(26, 'pop', NULL, 1, 26, 1, '2020-12-30 06:56:29', '2020-12-30 06:56:30'),
+(27, NULL, '123', 0, 26, 1, '2020-12-30 06:57:57', '2020-12-30 06:57:57'),
+(28, 'lol', NULL, 1, 28, 1, '2020-12-30 07:09:18', '2020-12-30 07:09:18'),
+(29, NULL, 'New lol', 0, 28, 1, '2020-12-30 14:11:13', '2020-12-30 14:11:13'),
+(31, NULL, 'View Student Balance', 0, 7, 1, '2021-01-01 16:27:00', '2021-01-01 16:27:00');
 
 --
 -- Indexes for dumped tables
@@ -179,12 +176,6 @@ ALTER TABLE `privileges`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `s_add_staff`
---
-ALTER TABLE `s_add_staff`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -192,19 +183,13 @@ ALTER TABLE `s_add_staff`
 -- AUTO_INCREMENT for table `logins`
 --
 ALTER TABLE `logins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `privileges`
 --
 ALTER TABLE `privileges`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `s_add_staff`
---
-ALTER TABLE `s_add_staff`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
