@@ -20,6 +20,7 @@ Run Seeder
 #### php artisan db:seed
 
 login id - admin@example.com
+
 password - 123
 
 Email: [mdsadiquedeveloper@gmail.com](mailto:mdsadiquedeveloper@gmail.com)<br />
