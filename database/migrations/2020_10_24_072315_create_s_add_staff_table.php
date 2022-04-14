@@ -18,6 +18,7 @@ class CreateSAddStaffTable extends Migration
             $table->integer('logid');
             $table->string('name');
             $table->string('mobile');
+            $table->string('email')->unique();
             $table->string('image');
             $table->text('address');
             $table->timestamps();
