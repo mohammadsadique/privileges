@@ -19,6 +19,8 @@ Run Migrate :
 Run Seeder
 #### php artisan db:seed
 
+login id - admin@example.com
+password - 123
 
 Email: [mdsadiquedeveloper@gmail.com](mailto:mdsadiquedeveloper@gmail.com)<br />
 WhatsApp Web [(91) 97705-99354](https://web.whatsapp.com/send?phone=9770599354)<br />
